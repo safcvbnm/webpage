@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <title>ex12.html</title>
+        <script type="text/javascript">
+		$(document).ready(function(){
+			var top = ($('#img').position().top)/1.0;
+			$('#input1').change(function () {
+				var password = $(this).val();
+				$('#input2').val(password);
+			});
+			
+			$('input[name=program]').change(function(){
+				var item = $(this).val();
+				$('#radio1').val(item);
+			});
+			
+			$('input[name=OS]').change(function(){
+				var item = $(this).val();
+				$('#radio2').val(item);
+			});
+			
+			$('input[name=fruit]').change(function(){
+				var items = '';
+				$.each($("input[name='fruit']:checked"), function(){            
+					items += $(this).val()+",";
+				});
+				/*
+				$("input[name='fruit'][checked=true]").each(function(){            
+					items += $(this).val()+",";
+				});
+				*/
+				$('#check').val(items);
+			});
+			
+			$('select[name=slct1]').change(function(){
+				var item = $(this).val();
+				$('#input3').val(item);
+			});
+			
+			$('select[name=slct2]').change(function(){
+				var items = '';
+				$('select[name=slct2]').find(":selected").each(function() {
+					items += $(this).val()+",";
+				});
+				$('#input4').val(items);
+			});
+			
+			$('#addfruit').change(function (){
+				var fruit = $(this).val();
+				$('select[name=slct2]').append($("<option></option>").attr("value", fruit).text(fruit));
+			});
+			
+			$('#input5').click(function (){
+				$('select[name=slct2]').find(":selected").remove();
+			});
+			
+			$('select[name=slct3]').change(function(){
+				$('#img').attr('src',$(this).val());
+			});
+			
+			$('#input6').click(function (){
+				picFile = $('select[name=slct3]').val();
+				picHeight = ($('#img').height())/1.0;
+				top += picHeight;
+				var pe = $("<img></img>");
+				pe.click(function (){
+					$(this).remove();
+					top = ($('#img').position().top)/1.0;
+				});
+				$('#basket').append(pe.attr({src:picFile,style:"top:"+top+"px;"}));
+			});
+		});
+		</script>
+        <style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+.btn { display: inline-block; *display: inline; *zoom: 1; font-family: "malgun gothic", simhei; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 18px; color: #333333; text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(top, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0); border-color: #e6e6e6 #e6e6e6 #e6e6e6; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border: 1px solid #e6e6e6; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); cursor: pointer; *margin-left: .3em; }
+.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { background-color: #e6e6e6; }
+.btn-large { padding: 9px 14px; font-size: 15px; line-height: normal; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+.btn:hover { color: #333333; text-decoration: none; background-color: #e6e6e6; background-position: 0 -15px; -webkit-transition: background-position 0.1s linear; -moz-transition: background-position 0.1s linear; -ms-transition: background-position 0.1s linear; -o-transition: background-position 0.1s linear; transition: background-position 0.1s linear; }
+.btn-primary, .btn-primary:hover { text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); color: #ffffff; }
+.btn-primary.active { color: rgba(255, 255, 255, 0.75); }
+.btn-primary { background-color: #4a77d4; background-image: -moz-linear-gradient(top, #6eb6de, #4a77d4); background-image: -ms-linear-gradient(top, #6eb6de, #4a77d4); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6eb6de), to(#4a77d4)); background-image: -webkit-linear-gradient(top, #6eb6de, #4a77d4); background-image: -o-linear-gradient(top, #6eb6de, #4a77d4); background-image: linear-gradient(top, #6eb6de, #4a77d4); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#6eb6de, endColorstr=#4a77d4, GradientType=0);  border: 1px solid #3762bc; text-shadow: 1px 1px 1px rgba(0,0,0,0.4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5); }
+.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #4a77d4; }
+.btn-block { width: 100%; display:block; }
+
+* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
+
+html { width: 100%; height:300%; overflow:scroll; }
+
+body { 
+  color:#FFF;
+	width: 100%;
+	height:100%;
+	font-family: "malgun gothic", simhei;
+	background: #092756;
+	background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+}
+.login { 
+	position: relative;
+	display:block;
+	top: 10%;
+	left: 50%;
+	margin: -150px 0 0 -150px;
+	width:380px;
+	height:300px;
+}
+
+.login h1 {color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
+
+.login p {
+	font-family: "malgun gothic", simhei;
+  font-size:20px;
+  color: #c1c2c3;
+}
+input { 
+	width: 100%; 
+	margin-bottom: 10px; 
+	background: rgba(0,0,0,0.3);
+	border: none;
+	outline: none;
+	padding: 10px;
+	font-size: 13px;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	border: 1px solid rgba(0,0,0,0.3);
+	border-radius: 4px;
+	box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+	-webkit-transition: box-shadow .5s ease;
+	-moz-transition: box-shadow .5s ease;
+	-o-transition: box-shadow .5s ease;
+	-ms-transition: box-shadow .5s ease;
+	transition: box-shadow .5s ease;
+}
+input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }
+
+.center-on-page p{
+  font-family: "malgun gothic", simhei;
+  font-size:20px;
+  color: #c1c2c3;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+label {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 10px;
+  line-height: 36px;
+  cursor: pointer;
+}
+label::before {
+  content: " ";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #FFF;
+  border-radius: 4px;
+  z-index: -1;
+}
+input[type="radio"] + label::before {
+  border-radius: 18px;
+}
+/* Checked */
+input[type="checkbox"]:checked + label,
+input[type="radio"]:checked + label {
+  padding-left: 10px;
+  color: #fff;
+}
+input[type="checkbox"]:checked + label::before,
+input[type="radio"]:checked + label::before {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #040342;
+}
+/* Transition */
+label,
+label::before {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+
+textarea {
+  height:auto;
+  max-width:600px;
+  color:#000000;
+  font-weight:300;
+  font-size:20px;
+  font-family:"malgun gothic", simhei;;
+  width:100%;
+  background:#fff;
+  border-radius:3px;
+  line-height:1em;
+  border:none;
+  box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
+  padding:30px;
+  -webkit-transition: height 1s ease;
+-moz-transition: height 1s ease;
+-ms-transition: height 1s ease;
+-o-transition: height 1s ease;
+transition: height 1s ease;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  font-size: 18px;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #2c3e50;
+  background-image: none;
+}
+/* Custom Select */
+.select {
+  position: relative;
+  display: block;
+  width: 20em;
+  height: 3em;
+  font-size: 15px;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+select {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 0 0 .10em;
+  color: #fff;
+  cursor: pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 1em;
+  background: #34495e;
+  pointer-events: none;
+}
+/* Transition */
+.select:hover::after {
+  color: #f39c12;
+}
+.select::after {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+select2 {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  font-size: 18px;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #2c3e50;
+  background-image: none;
+}
+/* Custom Select */
+.select2 {
+  position: relative;
+  display: block;
+  width: 20em;
+  height: 6em;
+  font-size: 15px;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+select2 {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 0 0 .10em;
+  color: #fff;
+  cursor: pointer;
+}
+select2::-ms-expand {
+  display: none;
+}
+/* Arrow */
+.select2::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 1em;
+  background: #34495e;
+  pointer-events: none;
+}
+/* Transition */
+.select2:hover::after {
+  color: #f39c12;
+}
+.select2::after {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+img{
+	position: absolute;
+	width: 300px;
+	height:300px;
+	
+	border-radius: 50%;
+}
+
+img:hover {
+    box-shadow: 0 0 20px 1px #ffffff;
+}
+	</style>
+    </head>
+    <body>
+
+<div class="login">
+	<h1>ex12 Form Jquery</h1>
+    <form>
+    	<p>輸入密碼 : </p>
+    	<input type="password" name="u" placeholder="Password" id="input1"/>
+		<input type="text" name="u" placeholder="Show Password" id="input2"/>
+	  <div class="center-on-page">
+		<p>最專精的語言(radio 單)：</p>
+		<input value="HTML" type="radio" name="program" id="program1"/>
+        <label for="program1">HTML</label>
+        <input value="C++" type="radio" name="program" id="program2"/>
+        <label for="program2">C++</label>
+		<input value="Javascript" type="radio" name="program" id="program3"/>
+        <label for="program3">Javascript</label>
+		<input value="PHP" type="radio" name="program" id="program4"/>
+        <label for="program4">PHP</label>
+		<input class="btn btn-primary btn-block btn-large" type="button" id="radio1" value="------"/>
+		
+    	<p>最喜愛的OS(radio 單)：</p>
+        <input value="Linux" type="radio" name="OS" id="OS1"/>
+        <label for="OS1">Linux</label>
+        <input value="Win10" type="radio" name="OS" id="OS2"/>
+        <label for="OS2">Win10</label>
+		<input value="MacOS" type="radio" name="OS" id="OS3"/>
+        <label for="OS3">MacOS</label>
+		<input value="Symbian" type="radio" name="OS" id="OS4"/>
+        <label for="OS4">Symbian</label>
+		<input class="btn btn-primary btn-block btn-large" type="button" id="radio2" value="------"/>
+		
+		<p>喜愛的水果(checkbox 多) : </p>
+        <input value="Banana" type="checkbox" name="fruit" id="fr1" />
+        <label for="fr1">Banana</label>
+        <input value="Guava" type="checkbox" name="fruit" id="fr2" />
+        <label for="fr2">Guava</label>
+        <input value="Melon" type="checkbox" name="fruit" id="fr3" />
+        <label for="fr3">Melon</label>
+		<input value="Grape" type="checkbox" name="fruit" id="fr4" />
+        <label for="fr4">Grape</label>
+		<input class="btn btn-primary btn-block btn-large" type="button" id="check" value="------"/>
+      </div>
+      
+      <p>喜愛的水果(select 單) : </p>
+      <div class="select">
+        <select name="slct1" id="slct1">
+          <option>Choose an option</option>
+          <option value="Peach">Peach</option>
+          <option value="Strawberry">Strawberry</option>
+          <option value="Apple">Apple</option>
+		  <option value="Orange">Orange</option>
+        </select>
+      </div>
+	  <br/><input class="btn btn-primary btn-block btn-large" type="button" id="input3" value="------"/>
+      
+      <p>喜愛的水果(select 多) : </p>
+      <div class="select2">
+        <select name="slct2" id="slct2" size="7" multiple="multiple">
+          <option value="Peach">桃子</option>
+          <option value="Strawberry">草莓</option>
+          <option value="Apple">蘋果</option>
+		  <option value="Orange">柳丁</option>
+		  <option value="Kiwi">奇異果</option>
+		  <option value="Pineapple">鳳梨</option>
+		  <option value="Mango">芒果</option>
+        </select>
+      </div>
+	  <br/><input class="btn btn-primary btn-block btn-large" type="button" id="input4" value="------"/>
+	  
+	  <p>新增水果 : </p>
+	  <input type="text" name="u" placeholder="Add Fruit" id="addfruit"/><br/>
+	  <input class="btn btn-primary btn-block btn-large" type="button" id="input5" value="移除所選水果"/>
+	  
+	  <p>喜愛的水果(select 圖) : </p>
+      <div class="select3">
+        <select name="slct3" id="slct3" size="5">
+          <option value="http://120.105.128.100/105-B/web-prog/my-ex/grape.png">葡萄</option>
+          <option value="http://120.105.128.100/105-B/web-prog/my-ex/blueberry.png">藍莓</option>
+          <option value="http://120.105.128.100/105-B/web-prog/my-ex/apple.png">蘋果</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/guava.png">番石榴</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/kiwi.png">奇異果</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/lemon.png">檸檬</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/melon.png">哈密瓜</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/pear.png">梨子</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/strawberry.png">草莓</option>
+		  <option value="http://120.105.128.100/105-B/web-prog/my-ex/tomato.png">番茄</option>
+        </select>
+      </div>
+	  <br/><input class="btn btn-primary btn-block btn-large" type="button" id="input6" value="新增所選水果圖(點圖可刪圖)"/>
+	  <br/><img src="" id="img" alt='尚未選圖'></img>
+	  <div id='basket'> </div>
+
+    </form>
+</div>
+    </body>
+</html>

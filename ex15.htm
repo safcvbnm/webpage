@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css">
+		<script src="jquery.mobile-1.4.5.min.js"></script>
+		<title>ex15.html</title>
+        <script type="text/javascript">
+		var table = [];
+		var map = null;
+		var panorama = null;
+		$(document).ready(function(){
+			$('#divTabs').tabs({active: 1});
+			$('#json').bind('click', do_json);
+			$('#mapBut').bind('click', function(){
+				google.maps.event.trigger(map, "resize");
+			});
+			$('#panoBut').bind('click', function(){
+				google.maps.event.trigger(panorama, "resize");
+			});
+			$("#out").on("click", "button" , show_label); //event delegate
+			$.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyAxUsVmjfxCYRgRHEME0d7FHj2pNcwKrFg",init);
+		});
+		
+		//initial google map and Street view
+		function init(){
+			var nuuPos = {lat: 24.545907, lng: 120.812094};
+			var mapOpt = {
+				center: nuuPos,
+				zoom: 16,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			map = new google.maps.Map($("#mapDiv")[0], mapOpt);	
+			panorama = new google.maps.StreetViewPanorama($("#panaDiv")[0]);
+			var sv = new google.maps.StreetViewService();
+			sv.getPanorama({location : nuuPos , radius : 50}, function (data,status){
+				if(status == google.maps.StreetViewStatus.OK){
+					panorama.setPano(data.location.pano);
+					panorama.setVisible(true);
+				}
+				else{
+					alert ('Street View data not found for this location.');
+				}
+			});
+		}
+	
+		//load json
+		function do_json(){
+			var url = 'https://www.twtainan.net/data/accommodation_zh-tw.json';
+			$.ajax({
+				url: url,
+				dataType: "json",
+				success: showOut,
+				error  : (res) => {
+	                alert('錯誤碼:'+ res.status);
+				}
+			});
+		}
+		
+		function showOut(data){ 
+			$('#out').empty();
+			if (data == null) {
+				alert("下載失敗!");
+				return;
+			}
+			table = data;
+			$.each(data, (i,v)=>{
+				label = "<button type='button' alt='"+i+"'>"+v.旅宿名稱+","+v.地址+"</button>";
+				$('#out').append(label+"<br/><br/>");
+			});
+		}   
+		
+		function show_label(i){
+			var l1 = '經度Lng';
+			var l2 = '緯度Lng';
+			v = table[i];
+			showPos = {lat: v.l1/1.0, lng: v.l2/1.0};
+			var pos = new google.maps.LatLng(showPos);
+			panorama.setPosition(pos);
+			map.setCenter(pos);
+		}
+		
+		
+		</script>
+        <style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+.btn { display: inline-block; *display: inline; *zoom: 1; font-family: "malgun gothic", simhei; padding: 4px 10px 4px; margin-bottom: 0; font-size: 13px; line-height: 18px; color: #333333; text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(top, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#ffffff, endColorstr=#e6e6e6, GradientType=0); border-color: #e6e6e6 #e6e6e6 #e6e6e6; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); border: 1px solid #e6e6e6; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); cursor: pointer; *margin-left: .3em; }
+.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { background-color: #e6e6e6; }
+.btn-large { padding: 9px 14px; font-size: 15px; line-height: normal; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+.btn:hover { color: #333333; text-decoration: none; background-color: #e6e6e6; background-position: 0 -15px; -webkit-transition: background-position 0.1s linear; -moz-transition: background-position 0.1s linear; -ms-transition: background-position 0.1s linear; -o-transition: background-position 0.1s linear; transition: background-position 0.1s linear; }
+.btn-primary, .btn-primary:hover { text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); color: #ffffff; }
+.btn-primary.active { color: rgba(255, 255, 255, 0.75); }
+.btn-primary { background-color: #4a77d4; background-image: -moz-linear-gradient(top, #6eb6de, #4a77d4); background-image: -ms-linear-gradient(top, #6eb6de, #4a77d4); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6eb6de), to(#4a77d4)); background-image: -webkit-linear-gradient(top, #6eb6de, #4a77d4); background-image: -o-linear-gradient(top, #6eb6de, #4a77d4); background-image: linear-gradient(top, #6eb6de, #4a77d4); background-repeat: repeat-x; filter: progid:dximagetransform.microsoft.gradient(startColorstr=#6eb6de, endColorstr=#4a77d4, GradientType=0);  border: 1px solid #3762bc; text-shadow: 1px 1px 1px rgba(0,0,0,0.4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.5); }
+.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #4a77d4; }
+.btn-block { width: 100%; display:block; }
+
+* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
+
+html { width: 100%; height:200%;}
+
+body { 
+  color:#FFF;
+	width: 100%;
+	height:100%;
+	font-family: "malgun gothic", simhei;
+	background: #092756;
+	background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+}
+h1 {color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
+
+p {
+	font-family: "malgun gothic", simhei;
+  font-size:20px;
+  color: #c1c2c3;
+}
+input { 
+	width: 100%; 
+	margin-bottom: 10px; 
+	background: rgba(0,0,0,0.3);
+	border: none;
+	outline: none;
+	padding: 10px;
+	font-size: 13px;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	border: 1px solid rgba(0,0,0,0.3);
+	border-radius: 4px;
+	box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+	-webkit-transition: box-shadow .5s ease;
+	-moz-transition: box-shadow .5s ease;
+	-o-transition: box-shadow .5s ease;
+	-ms-transition: box-shadow .5s ease;
+	transition: box-shadow .5s ease;
+}
+input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }
+
+.center-on-page p{
+  font-family: "malgun gothic", simhei;
+  font-size:20px;
+  color: #c1c2c3;
+}
+
+label {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 10px;
+  line-height: 36px;
+  cursor: pointer;
+}
+label::before {
+  content: " ";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #FFF;
+  border-radius: 4px;
+  z-index: -1;
+}
+/* Transition */
+label,
+label::before {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+
+img{
+	position: relative;
+	width: 500px;
+	height:380px;
+	
+	border-radius: 50%;
+}
+
+img:hover {
+    box-shadow: 0 0 20px 1px #ffffff;
+}
+
+#out {
+        width: 400px;
+        height: 600px; 
+        overflow-x:auto;
+        overflow-y:auto;       
+}
+
+button {
+	font-size:20px;
+	font-family: "malgun gothic";
+	border: none;
+	background: #000080;
+	cursor: pointer;
+	border-radius: 3px;
+	padding: 6px;
+	width: 350px;
+	color: white;
+	box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+}  
+     
+button:hover {
+	transform: translateY(-3px);
+    box-shadow: 0 6px 6px 0 rgba(0,0,0,0.2);
+}
+
+	</style>
+    </head>
+    <body>
+	
+	<div data-role="page" id="pageone" data-theme="b">
+		<div data-role="header" data-theme="b">
+			<h1>ex15 Mobile Page</h1>
+		</div>
+		
+		<div data-role="tabs" id="divTabs">
+			<div data-role="navbar">
+				<ul>
+					<li> <a href="#tabs-1" id="outBut" class="ui-btn ui-btn-b">Json</a></li>
+					<li> <a href="#tabs-2" id="mapBut" class="ui-btn ui-btn-b">Google Map</a></li>
+					<li> <a href="#tabs-3" id="panoBut" class="ui-btn ui-btn-b">Street View</a></li>
+				</ul>
+			</div>
+			
+			<div id="tabs-1">
+				<input class="btn btn-primary btn-block btn-large" type="button" id="json" value="Get Json"/>
+				<br/>
+				<div id="out"></div>
+			</div>
+			
+			<div id="tabs-2">
+				<div id='mapDiv' style="width:400px;height:600px;"></div>
+			</div>
+			
+			<div id="tabs-3">
+				<div id='panaDiv' style="width:400px;height:600px;"></div>
+			</div>
+		</div>
+	
+	</div>
+    </body>
+</html>
